@@ -2,11 +2,13 @@ const express = require('express')
 const cors = require('cors')
 const mongoose = require('mongoose')
 const bcrypt = require('bcryptjs')
+const jwt = require('jsonwebtoken')
 const User = require('./models/User')
 require('dotenv').config()
 const app = express()
 
 const bcryptSalt = bcrypt.genSaltSync(10)
+const jwtSecret = 'jfladksjfls'
 
 app.use(express.json())
 //this will help us parse json so that we can access variables
@@ -46,7 +48,15 @@ app.post('/login', async (req, res) => {
     const passOk = bcrypt.compareSync(password, userDoc.password)
     //we compare our password with userDoc password
     if (passOk) {
-      res.json('password ok')
+      jwt.sign(
+        { email: userDoc.email, id: userDoc._id },
+        jwtSecret,
+        {},
+        (err, token) => {
+          if (err) throw err
+          res.cookie('token', token).json('pass ok')
+        },
+      )
     } else {
       res.status(422).json('pass not ok')
     }
