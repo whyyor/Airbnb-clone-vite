@@ -2,11 +2,11 @@ const express = require('express')
 const cors = require('cors')
 const mongoose = require('mongoose')
 const bcrypt = require('bcryptjs')
-const UserModel = require('./models/User')
+const User = require('./models/User')
 require('dotenv').config()
 const app = express()
 
-const bcryptSalt = bcrypt.genSalt(12)
+const bcryptSalt = bcrypt.genSaltSync(10)
 
 app.use(express.json())
 //this will help us parse json so that we can access variables
