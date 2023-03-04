@@ -4,6 +4,7 @@ const mongoose = require('mongoose')
 const bcrypt = require('bcryptjs')
 const jwt = require('jsonwebtoken')
 const User = require('./models/User')
+const cookieParser = require('cookie-parser')
 require('dotenv').config()
 const app = express()
 
@@ -12,7 +13,8 @@ const jwtSecret = 'jfladksjfls'
 
 app.use(express.json())
 //this will help us parse json so that we can access variables
-
+app.use(cookieParser())
+//this will help us use cookies using req.cookies
 app.use(
   cors({
     credentials: true,
@@ -66,7 +68,8 @@ app.post('/login', async (req, res) => {
 })
 
 app.get('/profile', (req, res) => {
-  res.json('user info')
+  const { token } = req.cookies
+  res.json({ token })
 })
 
 app.listen(4000)
