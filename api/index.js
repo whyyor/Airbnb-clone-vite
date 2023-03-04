@@ -57,6 +57,7 @@ app.post('/login', async (req, res) => {
         (err, token) => {
           if (err) throw err
           res.cookie('token', token).json(userDoc)
+          //saves cookie to cookies which can be accessed using req.cookies
         },
       )
     } else {
@@ -70,9 +71,12 @@ app.post('/login', async (req, res) => {
 app.get('/profile', (req, res) => {
   const { token } = req.cookies
   if (token) {
-    jwt.verify(token, jwtSecret, {}, (err, user) => {
+    jwt.verify(token, jwtSecret, {}, async (err, userData) => {
       if (err) throw err
-      res.json(user)
+      const { name, email, _id } = await User.findById(userData.id)
+      //this return password too so we
+      //destrucutre this before hand to execute password
+      res.json({ name, email, _id })
     })
   } else {
     res.json(null)
