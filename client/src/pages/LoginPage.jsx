@@ -1,16 +1,23 @@
 import { Link, Navigate } from 'react-router-dom'
-import { useState } from 'react'
+import { useContext, useState } from 'react'
 import axios from 'axios'
+import { UserContext } from '../UserContext'
 
 export default function LoginPage() {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [redirect, setRedirect] = useState(false)
+  const { setUser } = useContext(UserContext)
 
   async function handleLoginSubmit(ev) {
     ev.preventDefault()
     try {
-      await axios.post('/login', { email, password })
+      //   const userInfo = await axios.post('/login', { email, password })
+      //userinfo will have all sorts of info but we only need data so
+      const response = await axios.post('/login', { email, password })
+      //we can also do {data} directly that will destrcuture data
+      // /login is returning userDoc which is stored in our mongodb database
+      setUser(response.data)
       alert('login successfull')
       setRedirect(true)
     } catch (e) {
