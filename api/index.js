@@ -83,4 +83,10 @@ app.get('/profile', (req, res) => {
   }
 })
 
+app.post('/logout', (req, res) => {
+  res.cookie('token', '').json(true)
+  //this empty string after token sets token to empty
+  //which meeans our cookie is empty so we don't have user info
+})
+
 app.listen(4000)

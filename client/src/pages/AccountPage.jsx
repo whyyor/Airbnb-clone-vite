@@ -1,9 +1,11 @@
-import { useContext } from 'react'
+import { useContext, useState } from 'react'
 import { Navigate, useParams } from 'react-router-dom'
 import { UserContext } from '../UserContext'
 import { Link } from 'react-router-dom'
+import axios from 'axios'
 
 export default function AccountPage() {
+  const [redirect, setRedirect] = useState(null)
   const { ready, user } = useContext(UserContext)
   let { subpage } = useParams()
   //this helps us log the subpage on which we are on
@@ -11,6 +13,11 @@ export default function AccountPage() {
   if (subpage === undefined) {
     subpage = 'profile'
     //if we are not on subpage then subpage will be undefined
+  }
+
+  async function logout() {
+    await axios.post('/logout')
+    setRedirect('/')
   }
 
   if (!ready) {
@@ -22,6 +29,10 @@ export default function AccountPage() {
     //because of that we even if user exist person is redirected to
     //login page so we use ready until user is found in context
     return <Navigate to={'/login'} />
+  }
+
+  if (redirect) {
+    return <Navigate to={redirect} />
   }
 
   function linkClasses(type = null) {
@@ -48,7 +59,9 @@ export default function AccountPage() {
       {subpage === 'profile' && (
         <div className="text-center max-w-lg mx-auto">
           Logged in as {user.name}({user.email})
-          <button className="primary max-w-sm mt-6">Logout</button>
+          <button onClick={logout} className="primary max-w-sm mt-6">
+            Logout
+          </button>
         </div>
       )}
     </div>
