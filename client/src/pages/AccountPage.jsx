@@ -1,6 +1,7 @@
 import { useContext } from 'react'
-import { Navigate } from 'react-router-dom'
+import { Navigate, useParams } from 'react-router-dom'
 import { UserContext } from '../UserContext'
+import { Link } from 'react-router-dom'
 
 export default function AccountPage() {
   const { ready, user } = useContext(UserContext)
@@ -16,6 +17,34 @@ export default function AccountPage() {
     return <Navigate to={'/login'} />
   }
 
-  return <div>Account page for {user?.name}</div>
-  //In the given code snippet, user is an object that may or may not exist. The ?. operator after user ensures that if user is null or undefined, the expression will short-circuit and return undefined without trying to access the name property. This prevents a runtime error from occurring if user does not exist.
+  const { subpage } = useParams()
+  //this helps us log the subpage on which we are on
+  console.log(subpage)
+
+  function linkClasses(type = null) {
+    let classes = 'py-2 px-6'
+    if (type === subpage || (subpage === undefined && type === 'profile')) {
+      classes += ' bg-primary text-white rounded-full'
+    }
+    return classes
+  }
+  //here we pass in type and that type will help us use classes
+  //for profile in our subpage we get undefined as it's not a subpage
+  //so if subpage is undefined and type=== profile
+
+  return (
+    <div>
+      <nav className="w-full flex justify-center mt-8 gap-4 ">
+        <Link className={linkClasses('profile')} to={'/account'}>
+          My Profile
+        </Link>
+        <Link className={linkClasses('bookings')} to={'/account/bookings'}>
+          My Bookings
+        </Link>
+        <Link className={linkClasses('places')} to={'/account/places'}>
+          My accomodations
+        </Link>
+      </nav>
+    </div>
+  )
 }
