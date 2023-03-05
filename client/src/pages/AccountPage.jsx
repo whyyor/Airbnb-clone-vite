@@ -5,6 +5,13 @@ import { Link } from 'react-router-dom'
 
 export default function AccountPage() {
   const { ready, user } = useContext(UserContext)
+  let { subpage } = useParams()
+  //this helps us log the subpage on which we are on
+  //this is provided to us by react
+  if (subpage === undefined) {
+    subpage = 'profile'
+    //if we are not on subpage then subpage will be undefined
+  }
 
   if (!ready) {
     return 'Loading...'
@@ -17,24 +24,17 @@ export default function AccountPage() {
     return <Navigate to={'/login'} />
   }
 
-  const { subpage } = useParams()
-  //this helps us log the subpage on which we are on
-  console.log(subpage)
-
   function linkClasses(type = null) {
     let classes = 'py-2 px-6'
-    if (type === subpage || (subpage === undefined && type === 'profile')) {
+    if (type === subpage) {
       classes += ' bg-primary text-white rounded-full'
     }
     return classes
   }
-  //here we pass in type and that type will help us use classes
-  //for profile in our subpage we get undefined as it's not a subpage
-  //so if subpage is undefined and type=== profile
 
   return (
     <div>
-      <nav className="w-full flex justify-center mt-8 gap-4 ">
+      <nav className="w-full flex justify-center mt-8 gap-4 mb-8 ">
         <Link className={linkClasses('profile')} to={'/account'}>
           My Profile
         </Link>
@@ -45,6 +45,12 @@ export default function AccountPage() {
           My accomodations
         </Link>
       </nav>
+      {subpage === 'profile' && (
+        <div className="text-center max-w-lg mx-auto">
+          Logged in as {user.name}({user.email})
+          <button className="primary max-w-sm mt-6">Logout</button>
+        </div>
+      )}
     </div>
   )
 }
