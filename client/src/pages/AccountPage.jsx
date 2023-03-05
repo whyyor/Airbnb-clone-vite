@@ -6,7 +6,7 @@ import axios from 'axios'
 
 export default function AccountPage() {
   const [redirect, setRedirect] = useState(null)
-  const { ready, user } = useContext(UserContext)
+  const { ready, user, setUser } = useContext(UserContext)
   let { subpage } = useParams()
   //this helps us log the subpage on which we are on
   //this is provided to us by react
@@ -17,6 +17,7 @@ export default function AccountPage() {
 
   async function logout() {
     await axios.post('/logout')
+    setUser(null)
     setRedirect('/')
   }
 
