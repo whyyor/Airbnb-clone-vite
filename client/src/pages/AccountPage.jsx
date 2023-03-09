@@ -17,15 +17,15 @@ export default function AccountPage() {
 
   async function logout() {
     await axios.post('/logout')
-    setUser(null)
     setRedirect('/')
+    setUser(null)
   }
 
   if (!ready) {
     return 'Loading...'
   }
 
-  if (ready && !user) {
+  if (ready && !user && !redirect) {
     ///we use ready because getting user takes some milliseconds
     //because of that we even if user exist person is redirected to
     //login page so we use ready until user is found in context
