@@ -36,10 +36,10 @@ export default function PlacesPage() {
   async function addPhotoByLink(ev){
     ev.preventDefault()
    //this will disable automatic reload on adding photo
-    const {data:filename} = await axios.post('/upload-by-link', {link:photoLink});
+    const {data:filenames} = await axios.post('/upload-by-link', {link:photoLink});
     //because we are return photoname in res.json
     setAddedPhotos(prev=>{
-        return [...prev, filename];
+        return [...prev, ...filenames];
         //will store all previous photos and new photo
     })
     setPhotoLink('');
@@ -115,13 +115,13 @@ export default function PlacesPage() {
             </div>
             <div className="mt-2 grid gap-2 grid-cols-3 md:grid-cols-4 lg:grid-cols-6">
             {addedPhotos.length>0 && addedPhotos.map(imgName=>(
-                <div>
+                <div className='h-32 flex'>
                 <img src={'http://localhost:4000/uploads/'+imgName}
-                className='rounded-2xl'
+                className='rounded-2xl w-full object-cover'
                 alt="" />
                 </div>
             ))}
-              <label className="cursor-pointer flex items-center justify-center gap-1 border bg-transparent rounded-2xl p-2 text-2xl text-gray-600">
+              <label className="h-32 cursor-pointer flex items-center justify-center gap-1 border bg-transparent rounded-2xl p-2 text-2xl text-gray-600">
               <input type='file' multiple className='hidden' onChange={uploadPhoto} />
                 <svg
                   xmlns="http://www.w3.org/2000/svg"

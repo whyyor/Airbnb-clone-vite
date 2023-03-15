@@ -18,7 +18,7 @@ app.use(express.json())
 //this will help us parse json so that we can access variables
 app.use(cookieParser())
 //this will help us use cookies using req.cookies
-app.use('/uploads',express.static(__dirname))
+app.use('/uploads',express.static(__dirname+'/uploads'))
 app.use(
   cors({
     credentials: true,
@@ -115,7 +115,7 @@ app.post('/upload',photosMiddleware.array('photos',100) ,(req,res)=>{
         const ext = parts[parts.length - 1];
         const newPath = path + '.' + ext;
         fs.renameSync(path, newPath);
-        uploadedFiles.push(newPath);
+        uploadedFiles.push(newPath.replace('uploads/',''));
     }
     res.json(uploadedFiles);
 });
