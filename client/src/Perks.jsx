@@ -91,7 +91,7 @@ return (
                 </svg>
                 <span>Pets</span>
               </label>
-              <label className="border p-4 flex rounded-2xl gap-2 items-center">
+              <label className="border p-4 flex rounded-2xl gap-2 items-center cursor-pointer">
                 <input type="checkbox" />
                 <svg
                   xmlns="http://www.w3.org/2000/svg"

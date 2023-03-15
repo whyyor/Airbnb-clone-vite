@@ -8,6 +8,8 @@ const cookieParser = require('cookie-parser')
 const imageDownloader = require('image-downloader')
 require('dotenv').config()
 const app = express()
+const multer = require('multer')
+const fs = require('fs')
 
 const bcryptSalt = bcrypt.genSaltSync(10)
 const jwtSecret = 'jfladksjfls'
@@ -16,6 +18,7 @@ app.use(express.json())
 //this will help us parse json so that we can access variables
 app.use(cookieParser())
 //this will help us use cookies using req.cookies
+app.use('/uploads',express.static(__dirname+'/uploads'))
 app.use(
   cors({
     credentials: true,
@@ -102,5 +105,19 @@ app.post('/upload-by-link',async (req,res)=>{
   })
   res.json(newName)
 })
+
+const photosMiddleware = multer({dest:'uploads/'})
+app.post('/upload',photosMiddleware.array('photos',100) ,(req,res)=>{
+    const uploadedFiles = [];
+    for(let i=0; i<req.files.length; i++){
+        const {path,originalname} = req.files[i];
+        const parts = originalname.split('.')
+        const ext = parts[parts.length - 1];
+        const newPath = path + '.' + ext;
+        fs.renameSync(path, newPath);
+        uploadedFiles.push(newPath);
+    }
+    res.json(uploadedFiles);
+});
 
 app.listen(4000)
