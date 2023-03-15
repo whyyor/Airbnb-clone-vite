@@ -2,7 +2,6 @@ import { Link, useParams } from 'react-router-dom'
 import { useState } from 'react'
 import axios from 'axios'
 import Perks from '../Perks'
-import { response } from 'express'
 
 export default function PlacesPage() {
   const { action } = useParams()
@@ -34,23 +33,6 @@ export default function PlacesPage() {
     )
   }
 
-  function uploadPhoto(ev) {
-    const files = ev.target.files;
-    const data = new FormData()
-    for(let i =0; i<files.length; i++){
-        data.append('photos',files[i]);
-    }
-     axios.post('/upload',data,{
-        headers:{'Content-type':'multipart/form-data'}
-    }).then(response=>{
-        const {data} =filename
-        setAddedPhotos(prev=>{
-            return [...prev, filename];
-            //will store all previous photos and new photo
-        })
-    })
- }
-
   async function addPhotoByLink(ev){
     ev.preventDefault()
    //this will disable automatic reload on adding photo
@@ -62,6 +44,23 @@ export default function PlacesPage() {
     })
     setPhotoLink('');
   }
+
+  function uploadPhoto(ev) {
+    const files = ev.target.files;
+    const data = new FormData()
+    for(let i =0; i<files.length; i++){
+        data.append('photos',files[i]);
+    }
+     axios.post('/upload',data,{
+        headers:{'Content-type':'multipart/form-data'}
+    }).then(response=>{
+        const {data:filename} = response
+        setAddedPhotos(prev=>{
+            return [...prev, filename];
+            //will store all previous photos and new photo
+        })
+    })
+ }
 
   return (
     <div>

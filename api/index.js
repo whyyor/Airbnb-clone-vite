@@ -18,7 +18,7 @@ app.use(express.json())
 //this will help us parse json so that we can access variables
 app.use(cookieParser())
 //this will help us use cookies using req.cookies
-app.use('/uploads',express.static(__dirname+'/uploads'))
+app.use('/uploads',express.static(__dirname))
 app.use(
   cors({
     credentials: true,
