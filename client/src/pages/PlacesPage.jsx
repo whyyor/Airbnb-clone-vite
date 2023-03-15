@@ -32,6 +32,10 @@ export default function PlacesPage() {
     )
   }
 
+  function addPhotoByLink(){
+
+  }
+
   return (
     <div>
       {action !== 'new' && (
@@ -67,13 +71,18 @@ export default function PlacesPage() {
             )}
             <input
               type="text"
+              value={title}
+             onChange={ev=>setTitle(ev.target.value)}
               placeholder="title, for example my lovely apartment"
             />
             {preInput('Address','Address to this place')}
-            <input type="text" placeholder="address" />
+            <input type="text"
+            value={address}
+           onChange={ev=>setAddress(ev.target.value)}
+             placeholder="address" />
             {preInput('Photos','More = better')}
             <div className="flex gap-2">
-              <input type="text" placeholder={'Add using a link... jpg'} />
+              <input type="text" value={photoLink} onChange={ev=>setPhotoLink(ev.target.value)} placeholder={'Add using a link... jpg'} />
               <button className="border-gray-200 px-4 rounded-2xl">
                 Add&nbsp;Photo
               </button>
@@ -99,26 +108,33 @@ export default function PlacesPage() {
               </button>
             </div>
             {preInput('Description','description of the place')}
-            <textarea className="" />
+            <textarea value={description} onChange={ev=>setDescription(ev.target.value)} />
             {preInput('Perks','select all the perks of your place')}
             <div className="grid grid-cols-2 gap-1 md:grid-cols-3 lg:grid-cols-6 mt-2">
-                <Perks />
+                <Perks selected={perks} onChange={setPerks} />
             </div>
             {preInput('Extra','house rules, etc')}
-            <textarea />
+            <textarea value={extraInfo} onChange={ev=>setExtraInfo(ev.target.value)} />
             {preInput('Check in& out timests','add check in and out times, remember to have some time window for cleaning the room betbween guests')}
             <div className="grid gap-2 sm:grid-cols-3">
               <div>
                 <h3 className="mt-2 -mb-2">Check in time</h3>
-                <input type="text" placeholder="14:00" />
+                <input type="text"
+                placeholder="14"
+                value={checkIn}
+                onChange={ev=>setCheckIn(ev.target.value)} />
               </div>
               <div>
                 <h3 className="mt-2 -mb-2">Check out time</h3>
-                <input type="text" />
+                <input type="text"
+                placeholder='11'
+                value={checkOut}
+                onChange={ev=>setCheckOut(ev.target.value)} />
               </div>
               <div>
                 <h3 className="mt-2 -mb-2">Max number of guests</h3>
-                <input type="text" />
+                <input type="number" value={maxGuests}
+                onChange={ev => setMaxGuests(ev.target.value)} />
               </div>
             </div>
             <div>
