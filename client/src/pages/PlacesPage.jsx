@@ -36,10 +36,10 @@ export default function PlacesPage() {
   async function addPhotoByLink(ev){
     ev.preventDefault()
    //this will disable automatic reload on adding photo
-    const {data:filenames} = await axios.post('/upload-by-link', {link:photoLink});
+    const {data:filename} = await axios.post('/upload-by-link', {link:photoLink});
     //because we are return photoname in res.json
     setAddedPhotos(prev=>{
-        return [...prev, ...filenames];
+        return [...prev, filename];
         //will store all previous photos and new photo
     })
     setPhotoLink('');
@@ -54,7 +54,7 @@ export default function PlacesPage() {
      axios.post('/upload',data,{
         headers:{'Content-type':'multipart/form-data'}
     }).then(response=>{
-        const {data:filename} = response
+        const {data:filename} =response
         setAddedPhotos(prev=>{
             return [...prev, filename];
             //will store all previous photos and new photo
