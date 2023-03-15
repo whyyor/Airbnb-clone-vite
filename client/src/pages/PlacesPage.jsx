@@ -1,5 +1,6 @@
 import { Link, useParams } from 'react-router-dom'
 import { useState } from 'react'
+import axios from 'axios'
 import Perks from '../Perks'
 
 export default function PlacesPage() {
@@ -32,8 +33,16 @@ export default function PlacesPage() {
     )
   }
 
-  function addPhotoByLink(){
-
+  async function addPhotoByLink(ev){
+    ev.preventDefault()
+   //this will disable automatic reload on adding photo
+    const {data:filename} = await axios.post('/upload-by-link', {link:photoLink});
+    //because we are return photoname in res.json
+    setAddedPhotos(prev=>{
+        return [...prev, filename];
+        //will store all previous photos and new photo
+    })
+    setPhotoLink('');
   }
 
   return (
@@ -83,11 +92,16 @@ export default function PlacesPage() {
             {preInput('Photos','More = better')}
             <div className="flex gap-2">
               <input type="text" value={photoLink} onChange={ev=>setPhotoLink(ev.target.value)} placeholder={'Add using a link... jpg'} />
-              <button className="border-gray-200 px-4 rounded-2xl">
+              <button onClick={addPhotoByLink} className="bg-gray-200 px-4 rounded-2xl">
                 Add&nbsp;Photo
               </button>
             </div>
             <div className="mt-2 grid grid-cols-3 md:grid-cols-4 lg:grid-cols-6">
+            {addedPhotos.length>0 && addedPhotos.map(link=>(
+                <div>
+                    {link}
+                </div>
+            ))}
               <button className="flex justify-center gap-1 border bg-transparent rounded-2xl p-8 text-2xl text-gray-600">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -97,7 +111,6 @@ export default function PlacesPage() {
                   stroke="currentColor"
                   className="w-8 h-8"
                 >
-                  {' '}
                   <path
                     strokeLinecap="round"
                     strokeLinejoin="round"

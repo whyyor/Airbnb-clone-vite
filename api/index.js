@@ -5,6 +5,7 @@ const bcrypt = require('bcryptjs')
 const jwt = require('jsonwebtoken')
 const User = require('./models/User')
 const cookieParser = require('cookie-parser')
+const imageDownloader = require('image-downloader')
 require('dotenv').config()
 const app = express()
 
@@ -87,6 +88,19 @@ app.post('/logout', (req, res) => {
   res.cookie('token', '').json(true)
   //this empty string after token sets token to empty
   //which meeans our cookie is empty so we don't have user info
+})
+
+app.post('/upload-by-link',async (req,res)=>{
+    const {link} = req.body;
+   //once we have link we want to grab it and upload to uploads
+  //we use library called image-downloader
+  const newName = 'photo' + Date.now() + '.jpg';
+  await imageDownloader.image({
+    url:link,
+    dest:__dirname+'/uploads/'+newName
+    //{ __dirname: '/home/whyyor/Desktop/Airbnb-clone-vite/api' }
+  })
+  res.json(newName)
 })
 
 app.listen(4000)
