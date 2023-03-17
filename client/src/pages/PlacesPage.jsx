@@ -169,8 +169,7 @@ export default function PlacesPage() {
             <div className="grid grid-cols-2 gap-1 md:grid-cols-3 lg:grid-cols-6 mt-2">
               <Perks selected={perks} onChange={setPerks} />
               {
-                /* we pass in empty array of perks which when changed will have
-              true or false for checkbox */
+                /* we will pass empty array which will contain all the names of selected checkbox */
               }
             </div>
             {preInput("Extra", "house rules, etc")}

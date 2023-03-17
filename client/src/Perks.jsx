@@ -5,8 +5,10 @@ export default function Perks({ selected, onChange }) {
     const { checked, name } = ev.target;
     if (checked) {
       onChange([...selected, name]);
+      //if checked then we add name to selected array with other names
     } else {
       onChange([...selected.filter((selectedName) => selectedName !== name)]);
+      // will return true for all elements which are not equal to name, so it returns same array except name
     }
   }
   return (
