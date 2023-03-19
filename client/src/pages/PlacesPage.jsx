@@ -1,19 +1,21 @@
-import { Link, useParams } from "react-router-dom";
+import { Link, Navigate, useParams } from "react-router-dom";
 import { useState } from "react";
 import Perks from "../Perks";
+import axios from "axios";
 import PhotosUploader from "../PhotosUploader";
 
 export default function PlacesPage() {
   const { action } = useParams();
   const [title, setTitle] = useState("");
   const [address, setAddress] = useState("");
-  const [addedPhotos, setAddedPhotos] = useState([])
+  const [addedPhotos, setAddedPhotos] = useState([]);
   const [description, setDescription] = useState("");
   const [perks, setPerks] = useState([]);
   const [extraInfo, setExtraInfo] = useState("");
   const [checkIn, setCheckIn] = useState("");
   const [checkOut, setCheckOut] = useState("");
   const [maxGuests, setMaxGuests] = useState(1);
+  const [redirect, setRedirect] = useState('')
 
   function inputHeader(text) {
     return <h2 className="text-2xl -mt4">{text}</h2>;
@@ -32,6 +34,25 @@ export default function PlacesPage() {
     );
   }
 
+  async function addNewPlace(ev) {
+    ev.preventDefault();
+    await axios.post("/places", {
+      title,
+      address,
+      addedPhotos,
+      description,
+      perks,
+      extraInfo,
+      checkIn,
+      checkOut,
+      maxGuests,
+    });
+    setRedirect('/account/places');
+  }
+
+  if(redirect){
+    return <Navigate to={redirect} />
+  }
 
   return (
     <div>
@@ -61,7 +82,7 @@ export default function PlacesPage() {
       )}
       {action === "new" && (
         <div>
-          <form>
+          <form onSubmit={addNewPlace}>
             {preInput(
               "Title",
               "Title for your place should be short and catchy",
@@ -81,7 +102,10 @@ export default function PlacesPage() {
             />
             {preInput("Photos", "More = better")}
 
-            <PhotosUploader addedPhotos={addedPhotos} onChange={setAddedPhotos} />
+            <PhotosUploader
+              addedPhotos={addedPhotos}
+              onChange={setAddedPhotos}
+            />
 
             {preInput("Description", "description of the place")}
             <textarea
