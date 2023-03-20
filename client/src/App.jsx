@@ -23,6 +23,7 @@ function App() {
           <Route path="/register" element={<RegisterPage />} />
           <Route path="/account/" element={<ProfilePage />} />
           <Route path="/account/places" element={<PlacesPage />} />
+          <Route path="/account/bookings" element={<PlacesPage />} />
           <Route path="/account/places/new" element={<PlacesFormPage />} />
         </Route>
       </Routes>
