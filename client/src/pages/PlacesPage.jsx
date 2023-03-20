@@ -1,10 +1,10 @@
-import { Link, useParams } from "react-router-dom";
+import { Link } from "react-router-dom";
+import AccountNav from "../AccountNav";
 
 export default function PlacesPage() {
-  const { action } = useParams();
-
   return (
     <div>
+      <AccountNav />
       {action !== "new" && (
         <div className="text-center">
           <Link

@@ -1,8 +1,8 @@
 import PhotosUploader from "../PhotosUploader";
 import Perks from "../Perks";
 import { useState } from "react";
-import { Navigate } from "react-router-dom";
 import axios from "axios";
+import AccountNav from "../AccountNav";
 
 export default function PlacesFormPage() {
   const [title, setTitle] = useState("");
@@ -49,6 +49,7 @@ export default function PlacesFormPage() {
 
   return (
     <div>
+      <AccountNav />
       <form onSubmit={addNewPlace}>
         {preInput(
           "Title",
