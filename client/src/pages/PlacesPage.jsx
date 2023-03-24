@@ -6,7 +6,7 @@ import AccountNav from "../AccountNav";
 export default function PlacesPage() {
   const [places, setPlaces] = useState([]);
   useEffect(() => {
-    axios.get("/places").then(({ data }) => {
+    axios.get("/user-places").then(({ data }) => {
       setPlaces(data);
     });
   }, []);
@@ -45,7 +45,11 @@ export default function PlacesPage() {
                 <div className="w-32 h-32 bg-gray-300 flex ">
                   {/* add shrink-0 and grow if you get image error */}
                   {place.photos.length > 0 && (
-                    <img className="object-cover" src={'http://localhost:4000/uploads/'+place.photos[0]} alt="" />
+                    <img
+                      className="object-cover"
+                      src={"http://localhost:4000/uploads/" + place.photos[0]}
+                      alt=""
+                    />
                   )}
                 </div>
                 <div className="grow-0 shrink">
